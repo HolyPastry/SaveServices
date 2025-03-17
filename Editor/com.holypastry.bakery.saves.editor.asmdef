@@ -1,0 +1,16 @@
+{
+    "name": "com.holypastry.bakery.saves.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f2273b449ee9b4220b277637043ebce1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

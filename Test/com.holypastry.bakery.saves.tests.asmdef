@@ -1,0 +1,17 @@
+{
+    "name": "com.holypastry.bakery.saves.tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f2273b449ee9b4220b277637043ebce1",
+        "GUID:0762e03342273496088ece273e8c937e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

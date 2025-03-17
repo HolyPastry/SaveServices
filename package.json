@@ -1,0 +1,20 @@
+{
+    "name": "com.holypastry.bakery.saves",
+    "version": "0.1.0",
+    "displayName": "SaveServices",
+    "description": "Basic service to add persitence to the game.",
+    "unity": "2022.3",
+    "unityRelease": "42f1",
+    "author": {
+        "name": "Sebastien Berton",
+        "email": "sebasti1.berton@gmail.com",
+        "url": "https://github.com/HolyPastry"
+    },
+    "samples": [
+        {
+            "displayName": "SaveServices",
+            "description": "Contains the manager prefab",
+            "path": "Samples~/"
+        }
+    ]
+}
