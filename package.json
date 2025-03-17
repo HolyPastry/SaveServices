@@ -1,7 +1,7 @@
 {
     "name": "com.holypastry.bakery.saves",
-    "version": "0.1.0",
-    "displayName": "SaveServices",
+    "version": "0.1.1",
+    "displayName": "Save Services",
     "description": "Basic service to add persitence to the game.",
     "unity": "2022.3",
     "unityRelease": "42f1",
