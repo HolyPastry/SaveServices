@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Holypastry.Bakery.Flow;
 using UnityEngine;
 
 namespace Bakery.Saves
 {
-    public class SaveManager : MonoBehaviour
+    public class SaveManager : Service
     {
         [SerializeField] private bool _autoSave = true;
         [Serializable]
