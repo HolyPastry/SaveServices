@@ -45,6 +45,7 @@ namespace Bakery.Saves
         }
         void OnDisable()
         {
+            SaveServices.IsEnabled = () => false;
             SaveServices.SaveJson = (key, json) => { Debug.LogWarning("No Save System"); };
             SaveServices.LoadJson = (key) => { Debug.LogWarning("No Save System"); return null; };
             SaveServices.SaveToFile = (fileName) => { Debug.LogWarning("No Save System"); };
@@ -53,6 +54,7 @@ namespace Bakery.Saves
 
         void OnEnable()
         {
+            SaveServices.IsEnabled = () => true;
             SaveServices.SaveJson = Save;
             SaveServices.LoadJson = Load;
             SaveServices.SaveToFile = SaveToFile;

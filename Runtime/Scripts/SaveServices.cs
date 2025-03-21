@@ -7,6 +7,7 @@ namespace Bakery.Saves
 {
     public static class SaveServices
     {
+        public static Func<bool> IsEnabled = () => false;
         public const string DefaultSaveFilename = "Save";
         public static string DefaultSavePath => SavePath(DefaultSaveFilename);
         public static string SavePath(string fileName) => $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}.json";
