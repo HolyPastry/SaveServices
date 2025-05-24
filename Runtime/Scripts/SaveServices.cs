@@ -17,16 +17,16 @@ namespace Bakery.Saves
         public static Action<string> SaveToFile = (fileName) => { Debug.LogWarning("No Save System"); };
         public static Action<string> LoadFromFile = (filename) => { Debug.LogWarning("No Save System"); };
 
-        public static void Save(SerialData serialData)
+        public static void Save(string key, SerialData serialData)
         {
-            if (string.IsNullOrEmpty(serialData.Key()))
+            if (string.IsNullOrEmpty(key))
             {
                 Debug.LogWarning("Serial Data Key is empty");
                 return;
             }
             serialData.Serialize();
             string json = JsonUtility.ToJson(serialData);
-            SaveJson(serialData.Key(), json);
+            SaveJson(key, json);
         }
         public static T Load<T>(string key) where T : SerialData
         {
@@ -39,5 +39,22 @@ namespace Bakery.Saves
             return data;
         }
 
+        public static void DeleteSave(string filename)
+        {
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+                Debug.Log("Save Deleted");
+            }
+            else
+            {
+                Debug.LogWarning("No Save to delete");
+            }
+        }
+
+        public static void DeleteSave()
+        {
+            DeleteSave(DefaultSavePath);
+        }
     }
 }

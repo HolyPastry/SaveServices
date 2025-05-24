@@ -21,10 +21,14 @@ namespace Bakery.Saves.Test
                 TestSO = _testSO
             };
 
-            SaveServices.Save(data);
-            yield return new WaitForSeconds(1);
-            var loadedData = SaveServices.Load<TestSaveData>(data.Key());
+            SaveServices.DeleteSave();
+            SaveServices.Save("Key", data);
+
+            yield return new WaitForSeconds(1f);
+
+            var loadedData = SaveServices.Load<TestSaveData>("Key");
             loadedData.TestSO = _collection.GetFromName(loadedData.TestSOName);
+
             Debug.Log(loadedData.TestString);
             Debug.Log(loadedData.TestInt);
             Debug.Log(loadedData.TestList.Count);

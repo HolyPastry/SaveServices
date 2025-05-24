@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace Bakery.Saves.Test
 {
+
+
     [Serializable]
     public class TestSaveData : SerialData
     {
@@ -13,14 +15,14 @@ namespace Bakery.Saves.Test
         [NonSerialized]
         public TestSO TestSO;
         public string TestSOName;
+
+
         public int TestInt = 1;
 
         public List<string> TestList = new() { "Test1", "Test2", "Test3" };
 
         public override void Deserialize()
         { }
-
-        public override string Key() => "Test";
 
         public override void Serialize()
         {
