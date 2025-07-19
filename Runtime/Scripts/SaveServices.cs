@@ -7,15 +7,15 @@ namespace Bakery.Saves
 {
     public static class SaveServices
     {
-        public static Func<bool> IsEnabled = () => false;
+        public static Func<bool> IsEnabled = () => { Debug.LogWarning("No Save System"); return false; };
         public const string DefaultSaveFilename = "Save";
         public static string DefaultSavePath => SavePath(DefaultSaveFilename);
         public static string SavePath(string fileName) => $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}.json";
-        public static Action<string, string> SaveJson = (key, serializedString) => { Debug.LogWarning("No Save System"); };
-        public static Func<string, string> LoadJson = (key) => { Debug.LogWarning("No Save System"); return string.Empty; };
+        public static Action<string, string> SaveJson = (key, serializedString) => { };
+        public static Func<string, string> LoadJson = (key) => { return string.Empty; };
 
-        public static Action<string> SaveToFile = (fileName) => { Debug.LogWarning("No Save System"); };
-        public static Action<string> LoadFromFile = (filename) => { Debug.LogWarning("No Save System"); };
+        public static Action<string> SaveToFile = (fileName) => { };
+        public static Action<string> LoadFromFile = (filename) => { };
 
         public static void Save(string key, SerialData serialData)
         {
