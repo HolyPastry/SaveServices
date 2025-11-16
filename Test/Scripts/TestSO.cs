@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-namespace Bakery.Saves.Test
+namespace Bakery.Persistences.Test
 {
     [CreateAssetMenu(fileName = "SaveData", menuName = "Bakery/Test/SaveData", order = 0)]
     public class TestSO : ScriptableObject

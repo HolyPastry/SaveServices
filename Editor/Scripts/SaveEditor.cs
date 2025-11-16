@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bakery.Saves.Editor
+namespace Bakery.Persistences.Editor
 {
     public static class SaveMenu
     {

@@ -1,7 +1,7 @@
 using System.Collections;
 using Holypastry.Bakery;
 using UnityEngine;
-namespace Bakery.Saves.Test
+namespace Bakery.Persistences.Test
 {
     public class SaveSystemUnitTest : MonoBehaviour
     {

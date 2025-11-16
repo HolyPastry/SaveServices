@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bakery.Saves.Test
+namespace Bakery.Persistences.Test
 {
 
 
     [Serializable]
-    public class TestSaveData : SerialData
+    public class TestSaveData : ISerialData
     {
 
         public string TestString = "TestString";
@@ -21,10 +21,10 @@ namespace Bakery.Saves.Test
 
         public List<string> TestList = new() { "Test1", "Test2", "Test3" };
 
-        public override void Deserialize()
+        public void Deserialize()
         { }
 
-        public override void Serialize()
+        public void Serialize()
         {
             TestSOName = TestSO.name;
         }

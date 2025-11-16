@@ -3,8 +3,27 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace Bakery.Saves
+namespace Bakery
 {
+
+    public static class Persistence
+    {
+        public const string DefaultSaveFilename = "Save";
+        public static string DefaultSavePath => SavePath(DefaultSaveFilename);
+        public static string SavePath(string fileName)
+            => $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}.json";
+
+        public static Func<ISaveManager> Manager = UnregisterManager;
+
+        internal static ISaveManager UnregisterManager()
+        {
+            Debug.LogWarning("No Save Manager Registered");
+            Manager = () => new SaveMock();
+            return Manager();
+        }
+        private class SaveMock : ISaveManager { }
+    }
+
     public static class SaveServices
     {
         public static Func<bool> IsEnabled = () => { Debug.LogWarning("No Save System"); return false; };
@@ -17,7 +36,7 @@ namespace Bakery.Saves
         public static Action<string> SaveToFile = (fileName) => { };
         public static Action<string> LoadFromFile = (filename) => { };
 
-        public static void Save(string key, SerialData serialData)
+        public static void Save(string key, ISerialData serialData)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -28,7 +47,7 @@ namespace Bakery.Saves
             string json = JsonUtility.ToJson(serialData);
             SaveJson(key, json);
         }
-        public static T Load<T>(string key) where T : SerialData
+        public static T Load<T>(string key) where T : ISerialData
         {
             string json = LoadJson(key);
             if (string.IsNullOrEmpty(json))
