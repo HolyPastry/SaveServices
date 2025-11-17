@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bakery.Persistences.Editor
+namespace Bakery.Editor
 {
     public static class SaveMenu
     {
@@ -11,7 +11,7 @@ namespace Bakery.Persistences.Editor
         [MenuItem("Bakery/Reset Save File")]
         public static void ResetSaveFile()
         {
-            string path = $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{SaveServices.DefaultSaveFilename}.json";
+            string path = $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{SaveManager.DefaultSaveFilename}.json";
             if (File.Exists(path))
             {
                 File.Delete(path);

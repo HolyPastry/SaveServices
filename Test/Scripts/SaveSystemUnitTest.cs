@@ -21,12 +21,12 @@ namespace Bakery.Persistences.Test
                 TestSO = _testSO
             };
 
-            SaveServices.DeleteSave();
-            SaveServices.Save("Key", data);
+            Persistence.Manager().DeleteSaveFile();
+            Persistence.Manager().Cache("Key", data);
 
             yield return new WaitForSeconds(1f);
 
-            var loadedData = SaveServices.Load<TestSaveData>("Key");
+            var loadedData = Persistence.Manager().LoadOrCreate<TestSaveData>("Key");
             loadedData.TestSO = _collection.GetFromName(loadedData.TestSOName);
 
             Debug.Log(loadedData.TestString);

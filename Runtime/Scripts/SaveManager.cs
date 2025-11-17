@@ -2,14 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Holypastry.Bakery.Flow;
 using UnityEngine;
 
-namespace Bakery.Saves
+namespace Bakery
 {
-    public class SaveManager : Service
+    public class SaveManager : MonoBehaviour, ISaveManager
     {
         [SerializeField] private bool _autoSave = true;
+
+        public const string DefaultSaveFilename = "Save";
+        public const string PlayerPrefsSaveKey = "SavePath";
+        public static string DefaultSavePath => SavePath(DefaultSaveFilename);
+
+        public bool IsEnabled => true;
+
+
         [Serializable]
         public struct Serial
         {
@@ -38,34 +45,34 @@ namespace Bakery.Saves
 
         void Awake()
         {
-            if (PlayerPrefs.HasKey("SavePath"))
-                _savePath = PlayerPrefs.GetString("SavePath");
+            if (PlayerPrefs.HasKey(PlayerPrefsSaveKey))
+                _savePath = PlayerPrefs.GetString(PlayerPrefsSaveKey);
             else
-                _savePath = SaveServices.DefaultSavePath;
+                _savePath = DefaultSavePath;
             LoadFile();
         }
         void OnDisable()
-        {
-            SaveServices.IsEnabled = () => false;
-            SaveServices.SaveJson = (key, json) => { Debug.LogWarning("No Save System"); };
-            SaveServices.LoadJson = (key) => { Debug.LogWarning("No Save System"); return null; };
-            SaveServices.SaveToFile = (fileName) => { Debug.LogWarning("No Save System"); };
-            SaveServices.LoadFromFile = (filename) => { Debug.LogWarning("No Save System"); };
-        }
+         => Persistence.Manager = Persistence.UnregisterManager;
+
 
         void OnEnable()
+         => Persistence.Manager = () => this;
+
+
+        void Update()
         {
-            SaveServices.IsEnabled = () => true;
-            SaveServices.SaveJson = Save;
-            SaveServices.LoadJson = Load;
-            SaveServices.SaveToFile = SaveToFile;
-            SaveServices.LoadFromFile = LoadFromFile;
+            if (!_needSaving || !_autoSave) return;
+
+            SaveFile();
+            _needSaving = false;
         }
 
-        private void LoadFromFile(string fileName)
+        void ISaveManager.LoadFile()
         {
-            PlayerPrefs.SetString("SavePath", fileName);
-            _savePath = SaveServices.SavePath(fileName);
+            LoadFile();
+        }
+        void LoadFile()
+        {
             if (!File.Exists(_savePath))
             {
                 using var str = File.Create(_savePath);
@@ -75,49 +82,63 @@ namespace Bakery.Saves
             _cached = JsonUtility.FromJson<SerialList>(raw) ?? new();
         }
 
-        private void SaveToFile(string fileName)
+        public void SaveFile()
         {
             string json = JsonUtility.ToJson(_cached);
-            File.WriteAllText(SaveServices.SavePath(fileName), json);
+            File.WriteAllText(_savePath, json);
         }
 
-        private void Save(string key, string json)
+
+        public static void DeleteSave(string filename)
         {
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+                Debug.Log("Save Deleted");
+            }
+            else
+            {
+                Debug.LogWarning("No Save to delete");
+            }
+        }
+
+        public void DeleteSaveFile()
+         => DeleteSave(_savePath);
+
+        public static string SavePath(string fileName) =>
+            $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}.json";
+
+        public void ChangeSavePath(string filename)
+        {
+            _savePath = SavePath(filename);
+            PlayerPrefs.SetString(PlayerPrefsSaveKey, filename);
+        }
+
+        public void Cache(string key, ISerialData serialData)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                Debug.LogWarning("Serial Data Key is empty");
+                return;
+            }
+            serialData.Serialize();
+            string json = JsonUtility.ToJson(serialData);
             _cached.List.RemoveAll(s => s.Key == key);
             _cached.List.Add(new(key, json));
             _needSaving = true;
         }
 
-        private string Load(string key)
+        public T LoadOrCreate<T>(string key) where T : ISerialData
         {
             Serial serial = _cached.List.Find(s => s.Key == key);
-            return serial.Json;
+            if (string.IsNullOrEmpty(serial.Json))
+                return Activator.CreateInstance<T>();
+
+            var data = JsonUtility.FromJson<T>(serial.Json);
+            data.Deserialize();
+            return data;
         }
 
-        private void LoadFile()
-        {
-            if (!File.Exists(SaveServices.DefaultSavePath))
-            {
-                using var str = File.Create(SaveServices.DefaultSavePath);
-                str.Close();
-            }
-            string raw = File.ReadAllText(SaveServices.DefaultSavePath);
-            _cached = JsonUtility.FromJson<SerialList>(raw) ?? new();
-        }
 
-        void Update()
-        {
-            if (_needSaving && _autoSave)
-            {
-                WriteFile();
-                _needSaving = false;
-            }
-        }
-
-        private void WriteFile()
-        {
-            string json = JsonUtility.ToJson(_cached);
-            File.WriteAllText(_savePath, json);
-        }
     }
 }

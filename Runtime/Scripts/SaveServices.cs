@@ -1,18 +1,11 @@
 
 using System;
-using System.IO;
 using UnityEngine;
 
 namespace Bakery
 {
-
     public static class Persistence
     {
-        public const string DefaultSaveFilename = "Save";
-        public static string DefaultSavePath => SavePath(DefaultSaveFilename);
-        public static string SavePath(string fileName)
-            => $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}.json";
-
         public static Func<ISaveManager> Manager = UnregisterManager;
 
         internal static ISaveManager UnregisterManager()
@@ -21,59 +14,37 @@ namespace Bakery
             Manager = () => new SaveMock();
             return Manager();
         }
-        private class SaveMock : ISaveManager { }
-    }
-
-    public static class SaveServices
-    {
-        public static Func<bool> IsEnabled = () => { Debug.LogWarning("No Save System"); return false; };
-        public const string DefaultSaveFilename = "Save";
-        public static string DefaultSavePath => SavePath(DefaultSaveFilename);
-        public static string SavePath(string fileName) => $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}.json";
-        public static Action<string, string> SaveJson = (key, serializedString) => { };
-        public static Func<string, string> LoadJson = (key) => { return string.Empty; };
-
-        public static Action<string> SaveToFile = (fileName) => { };
-        public static Action<string> LoadFromFile = (filename) => { };
-
-        public static void Save(string key, ISerialData serialData)
+        private class SaveMock : ISaveManager
         {
-            if (string.IsNullOrEmpty(key))
+            public bool IsEnabled => throw new NotImplementedException();
+
+            public void Cache(string key, ISerialData serialData)
+            { }
+
+            public void ChangeSavePath(string filename)
             {
-                Debug.LogWarning("Serial Data Key is empty");
-                return;
+                throw new NotImplementedException();
             }
-            serialData.Serialize();
-            string json = JsonUtility.ToJson(serialData);
-            SaveJson(key, json);
-        }
-        public static T Load<T>(string key) where T : ISerialData
-        {
-            string json = LoadJson(key);
-            if (string.IsNullOrEmpty(json))
-                return default;
 
-            var data = JsonUtility.FromJson<T>(json);
-            data.Deserialize();
-            return data;
-        }
-
-        public static void DeleteSave(string filename)
-        {
-            if (File.Exists(filename))
+            public void DeleteSaveFile()
             {
-                File.Delete(filename);
-                Debug.Log("Save Deleted");
+                throw new NotImplementedException();
             }
-            else
-            {
-                Debug.LogWarning("No Save to delete");
-            }
-        }
 
-        public static void DeleteSave()
-        {
-            DeleteSave(DefaultSavePath);
+            public void LoadFile()
+            {
+                throw new NotImplementedException();
+            }
+
+            public T LoadOrCreate<T>(string key) where T : ISerialData
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SaveFile()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

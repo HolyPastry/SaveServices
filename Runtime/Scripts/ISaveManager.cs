@@ -9,5 +9,6 @@ namespace Bakery
         void SaveFile();
         void LoadFile();
         T LoadOrCreate<T>(string key) where T : ISerialData;
+        void DeleteSaveFile();
     }
 }
