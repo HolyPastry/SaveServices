@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Bakery
 {
-    public class SaveManager : MonoBehaviour, ISaveManager
+    public class PersistenceManager : MonoBehaviour, IPersistenceManager
     {
         [SerializeField] private bool _autoSave = true;
 
@@ -67,7 +67,7 @@ namespace Bakery
             _needSaving = false;
         }
 
-        void ISaveManager.LoadFile()
+        void IPersistenceManager.LoadFile()
         {
             LoadFile();
         }

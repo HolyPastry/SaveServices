@@ -1,10 +1,10 @@
 namespace Bakery
 {
-    public interface ISaveManager
+    public interface IPersistenceManager
     {
-
-        void ChangeSavePath(string filename);
         bool IsEnabled { get; }
+        void ChangeSavePath(string filename);
+
         void Cache(string key, ISerialData serialData);
         void SaveFile();
         void LoadFile();
