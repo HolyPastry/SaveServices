@@ -1,5 +1,5 @@
 {
-    "name": "bakery.saves",
+    "name": "com.holypastry.bakery.saves",
     "version": "0.1.1",
     "displayName": "Bakery Persistence",
     "description": "Basic service to add persistence to the game.",
