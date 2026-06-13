@@ -1,8 +1,8 @@
 {
-    "name": "com.holypastry.bakery.saves",
+    "name": "Bakery.Persistence.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:96308c8b64ee446d19b379452820aff9"
+        "GUID:f2273b449ee9b4220b277637043ebce1"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

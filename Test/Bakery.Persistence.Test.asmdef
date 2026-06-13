@@ -1,5 +1,5 @@
 {
-    "name": "com.holypastry.bakery.saves.tests",
+    "name": "Bakery.Persistence.Test",
     "rootNamespace": "",
     "references": [
         "GUID:f2273b449ee9b4220b277637043ebce1",
